@@ -1,4 +1,5 @@
 import cv2, math
+import cvzone
 import numpy as np
 from cvzone.HandTrackingModule import HandDetector
 from sklearn.preprocessing import PolynomialFeatures
@@ -25,10 +26,11 @@ lin_reg.fit(x_poly, y)
 
 while True:
     aux, image = capture.read()
-    hands, image = detector.findHands(image)
+    hands = detector.findHands(image)
 
     if hands:
         hand_points = hands[0]['lmList']
+        x, y, w, h = hands[0]['bbox']
 
         x1 = hand_points[5][0]
         y1 = hand_points[5][1]
@@ -38,7 +40,12 @@ while True:
         distance = math.sqrt(abs(x2-x1)*2 + abs(y2-y1)*2)
         distance_poly = poly_regs.fit_transform([[distance]])
         cm = lin_reg.predict(distance_poly)
+
         print(distance, " : ", cm)
+
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
+        cvzone.putTextRect(image, f'{int(cm)} cm', (x+5, y-10))
+
 
     cv2.imshow("Hand Detector", image)
     cv2.waitKey(1)
