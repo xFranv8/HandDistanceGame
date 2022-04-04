@@ -37,7 +37,7 @@ while True:
         x2 = hand_points[17][0]
         y2 = hand_points[17][1]
 
-        distance = math.sqrt(abs(x2-x1)*2 + abs(y2-y1)*2)
+        distance = math.sqrt(abs(x2-x1)**2 + abs(y2-y1)**2)
         distance_poly = poly_regs.fit_transform([[distance]])
         cm = lin_reg.predict(distance_poly)
 
