@@ -1,4 +1,5 @@
 import cv2, math
+import numpy as np
 from cvzone.HandTrackingModule import HandDetector
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
@@ -12,6 +13,7 @@ detector = HandDetector(detectionCon=0.8, maxHands=1)
 
 x = [300, 245, 200, 170, 145, 130, 112, 103, 93, 87, 80, 75, 70, 67, 62, 59, 57]
 y = []
+x = np.reshape(x, (-1,1))
 for i in range(20, 105, 5):
     y.append(i)
 
@@ -27,10 +29,16 @@ while True:
 
     if hands:
         hand_points = hands[0]['lmList']
-        x1, y1 = hand_points[5]
-        x2, y2 = hand_points[17]
-        distance = math.sqrt(abs(x2-x1)**2 + abs(y2-y1)**2)
-        cm = lin_reg.predict([[distance]])
+
+        x1 = hand_points[5][0]
+        y1 = hand_points[5][1]
+        x2 = hand_points[17][0]
+        y2 = hand_points[17][1]
+
+        distance = math.sqrt(abs(x2-x1)*2 + abs(y2-y1)*2)
+        distance_poly = poly_regs.fit_transform([[distance]])
+        cm = lin_reg.predict(distance_poly)
         print(distance, " : ", cm)
+
     cv2.imshow("Hand Detector", image)
     cv2.waitKey(1)
