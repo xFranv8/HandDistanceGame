@@ -29,8 +29,7 @@ cx, cy = 200, 200
 color = (255, 0, 255)
 count = 0
 points = 0
-pressed = False
-unpressed = True
+
 
 initial_time = time.time()
 
@@ -55,9 +54,7 @@ while True:
             print(distance, " : ", cm)
 
             if cm < 35 and (x < cx < x + w) and (y < cy < y + h):
-                pressed = True
-            else:
-                unpressed = True
+                count = 1
 
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
             cvzone.putTextRect(image, f'{int(cm)} cm', (x+5, y-10))
@@ -67,11 +64,9 @@ while True:
         cv2.circle(image, (cx, cy), 20, (0, 0, 0), 2)
         cv2.circle(image, (cx, cy), 30, (255, 255, 255), 3)
 
-        if pressed and unpressed:
+        if count:
             count += 1
             color = (0, 255, 0)
-            unpressed = False
-            pressed = False
             if count == 3:
                 cx = random.randint(100, 1100)
                 cy = random.randint(100, 600)
