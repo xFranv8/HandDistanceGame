@@ -74,7 +74,7 @@ while True:
                 count = 0
                 points += 1
 
-        cvzone.putTextRect(image, f'Time: {30 - (time.time() - initial_time)}', (75, 1000), scale=3, offset=25)
+        cvzone.putTextRect(image, f'Time: {30 - (int(time.time() - initial_time))}', (45, 650), scale=3, offset=25)
         cvzone.putTextRect(image, f'Points: {points}', (1000, 75), scale=3, offset=25)
     else:
         pass
