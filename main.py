@@ -36,7 +36,7 @@ initial_time = time.time()
 
 while True:
     aux, image = capture.read()
-    hands = detector.findHands(image)
+    hands = detector.findHands(image, draw=False)
 
     if time.time() - initial_time < 30:
         if hands:
@@ -62,12 +62,10 @@ while True:
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
             cvzone.putTextRect(image, f'{int(cm)} cm', (x+5, y-10))
 
-
         cv2.circle(image, (cx, cy), 30, color, cv2.FILLED)
         cv2.circle(image, (cx, cy), 10, (0, 0, 0), cv2.FILLED)
         cv2.circle(image, (cx, cy), 20, (0, 0, 0), 2)
         cv2.circle(image, (cx, cy), 30, (255, 255, 255), 3)
-
 
         if pressed and unpressed:
             count += 1
